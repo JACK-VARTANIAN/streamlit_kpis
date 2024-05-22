@@ -75,32 +75,61 @@ if authentication_status:
     # )
 
     # Aplicando a classe CSS personalizada ao título
-    st.markdown('<h1 class="title-spacing">Olá, Aline.</h1>', unsafe_allow_html=True)
+    st.markdown('<h3 class="title-spacing">Olá, Aline</h3>', unsafe_allow_html=True)
     st.markdown('<hr class="custom-divider">', unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        with st.expander("Filtros de Data"):
-            start_date = st.date_input('Data Inicial', datetime.date.today().replace(day=1))
-            start_date_y = start_date - relativedelta(years=1)
+    # col1, col2, col3 = st.columns(3)
+    # with col1:
+    #     with st.expander("Filtros de Data"):
+    #         st.sidebar.divider()
+    #         st.sidebar.write('Selecione o período desejado')
+    #         start_date = st.sidebar.date_input('Data Inicial', datetime.date.today().replace(day=1))
+    #         # start_date = st.date_input('Data Inicial', datetime.date.today().replace(day=1))
+    #         start_date_y = start_date - relativedelta(years=1)
 
-            end_date = st.date_input('Data Final', max_value=datetime.date.today())
-            end_date_y = end_date - relativedelta(years=1)
+    #         end_date = st.sidebar.date_input('Data Final', max_value=datetime.date.today())
+    #         # end_date = st.date_input('Data Final', max_value=datetime.date.today())
+    #         end_date_y = end_date - relativedelta(years=1)
             
-            month = start_date.month
-            year = start_date.year
-            year_y = start_date_y.year
+    #         month = start_date.month
+    #         year = start_date.year
+    #         year_y = start_date_y.year
             
-            month_days = calendar.monthrange(year, month)[1]
-            days_left = month_days - end_date.day
+    #         month_days = calendar.monthrange(year, month)[1]
+    #         days_left = month_days - end_date.day
             
-            if month < 10:
-                month = '0' + str(month)
-            else:
-                month = str(month)
+    #         if month < 10:
+    #             month = '0' + str(month)
+    #         else:
+    #             month = str(month)
             
-            year_month = start_date.strftime('%Y-%m')
-            year_month_y = start_date_y.strftime('%Y-%m')
+    #         year_month = start_date.strftime('%Y-%m')
+    #         year_month_y = start_date_y.strftime('%Y-%m')
+            
+    st.sidebar.divider()
+    st.sidebar.write('Selecione o período desejado')
+    start_date = st.sidebar.date_input('Data Inicial', datetime.date.today().replace(day=1))
+    # start_date = st.date_input('Data Inicial', datetime.date.today().replace(day=1))
+    start_date_y = start_date - relativedelta(years=1)
+
+    end_date = st.sidebar.date_input('Data Final', max_value=datetime.date.today())
+    # end_date = st.date_input('Data Final', max_value=datetime.date.today())
+    end_date_y = end_date - relativedelta(years=1)
+    
+    month = start_date.month
+    year = start_date.year
+    year_y = start_date_y.year
+    
+    month_days = calendar.monthrange(year, month)[1]
+    days_left = month_days - end_date.day
+    
+    if month < 10:
+        month = '0' + str(month)
+    else:
+        month = str(month)
+    
+    year_month = start_date.strftime('%Y-%m')
+    year_month_y = start_date_y.strftime('%Y-%m')
     
     vendas_a = vendas[vendas['Data'].between(start_date, end_date)]
     vendas_y = vendas[vendas['Data'].between(start_date_y, end_date_y)]
@@ -281,7 +310,8 @@ if authentication_status:
         st.metric("Valor Equilibrio", fun.fNumbers(valorEquilibrio_aline), fun.fPerc(totalSaldo_igu))
         st.metric("Meta", fun.fNumbers(meta_aline['Meta']), fun.fPerc(perc_meta_aline))
     
-    st.title('Analise as suas :rainbow[Metas:]')
+    # st.title('Analise as suas :rainbow[Metas:]')
+    st.subheader('Acompanhe sua meta: ')
     
     ch.gauge(meta_aline, total_liq_aline, valorEquilibrio_aline)
 
