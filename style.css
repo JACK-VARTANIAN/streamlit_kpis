@@ -14,8 +14,22 @@ h1 {
 
 @media (max-width: 640px) {
   .st-emotion-cache-keje6w {
-    min-width: 10px;
+    min-width: 5px;
   }
+
+  #root>div:nth-child(1)>div.withScreencast>div>div>div>section.main.st-emotion-cache-bm2z3a.ea3mdgi8>div.block-container.st-emotion-cache-1jicfl2.ea3mdgi5>div>div>div>div:nth-child(2) {
+    display: contents;
+  }
+
+  .st-emotion-cache-1idizjf {
+    gap: 0.1rem;
+  }
+
+  .st-emotion-cache-ocqkz7 {
+    gap: 0.1rem;
+  }
+
+
 }
 
 .st-emotion-cache-2vxabl {

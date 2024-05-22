@@ -95,7 +95,7 @@ def gauge(meta_aline, total_liq_aline, valorEquilibrio_aline):
     }
     
     # st_pyecharts(chart='Pie', height='500px', width='100%')
-    st_echarts(options=option, height='500px', key='gauge')
+    st_echarts(options=option, height='300px', key='gauge')
 
 def gauge_streamviz():
     # Create a gauge chart
