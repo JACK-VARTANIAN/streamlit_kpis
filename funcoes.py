@@ -219,6 +219,15 @@ def percMeta(totalLiq, meta):
     return perc_meta
 
 
+def percVendaDia(realizado, valorEquilibrio):
+    perc_equilibrio = 100 / valorEquilibrio * realizado
+    perc_equilibrio = int(perc_equilibrio)
+    perc_equilibrio = 100 - perc_equilibrio
+    perc_equilibrio = (perc_equilibrio / 100) * -1
+    # value = "{:.0%}".format(perc_equilibrio)
+    return perc_equilibrio
+
+
 def mediaDia(totalLiq, end_date):
     mediaDia = totalLiq / end_date
     return mediaDia

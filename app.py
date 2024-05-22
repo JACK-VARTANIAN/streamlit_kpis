@@ -206,6 +206,7 @@ if authentication_status:
     
     valorEquilibrio = metaDia * end_date.day
     saldoEquilibrio = totalLiq - valorEquilibrio
+    saldoEquilibrioTotal = (totalLiq - valorEquilibrio)
     
     total_saldo = ((totalLiq / valorEquilibrio) - 1)
     
@@ -258,6 +259,7 @@ if authentication_status:
     saldo_meta_aline = fun.saldoMeta(metas_aline, total_liq_aline)
     perc_meta_aline = fun.percMeta(total_liq_aline, metas_aline)
     
+    
     metas_giovana = fun.meta_a(meta_giovana)
     meta_dia_giovana = fun.meta_dia(metas_giovana, month_days)
     saldo_meta_giovana = fun.saldoMeta(metas_giovana, total_liq_giovana)
@@ -277,9 +279,13 @@ if authentication_status:
     saldoEquilibrio_igu = fun.saldoEquilibrio(total_liq_igu, valorEquilibrio_igu)
     totalSaldo_igu = fun.totalSaldo(total_liq_igu, valorEquilibrio_igu)
     
+    
     valorEquilibrio_aline = fun.valorEquilibrio(meta_dia_aline, end_date.day)
     saldoEquilibrio_aline = fun.saldoEquilibrio(total_liq_aline, valorEquilibrio_aline)
     totalSaldo_aline = fun.totalSaldo(total_liq_aline, valorEquilibrio_aline)
+    perc_equil_meta_aline = fun.percVendaDia(total_liq_aline, valorEquilibrio_aline)
+    venda_dia_aline = valorEquilibrio_aline - total_liq_aline
+    
     
     valorEquilibrio_giovana = fun.valorEquilibrio(meta_dia_giovana, end_date.day)
     saldoEquilibrio_giovana = fun.saldoEquilibrio(total_liq_giovana, valorEquilibrio_giovana)
@@ -304,11 +310,11 @@ if authentication_status:
     
     col1, col2 = st.columns(2)
     with col1: 
-        st.metric("Realizado " + str(year), fun.fNumbers(total_liq_aline), fun.fPerc(yoy_total_aline))
-        st.metric("Saldo Meta", fun.fNumbers(saldo_meta_aline))
+        st.metric("Meta do mês", fun.fNumbers(meta_aline['Meta']))
+        st.metric("Realizado ", fun.fNumbers(total_liq_aline), fun.fPerc(perc_equil_meta_aline))
     with col2:
-        st.metric("Valor Equilibrio", fun.fNumbers(valorEquilibrio_aline), fun.fPerc(totalSaldo_igu))
-        st.metric("Meta", fun.fNumbers(meta_aline['Meta']), fun.fPerc(perc_meta_aline))
+        st.metric("Meta do dia", fun.fNumbers(meta_dia_aline))
+        st.metric("Venda esperada pro dia", fun.fNumbers(venda_dia_aline))        
     
     # st.title('Analise as suas :rainbow[Metas:]')
     st.subheader('Acompanhe sua meta: ')
