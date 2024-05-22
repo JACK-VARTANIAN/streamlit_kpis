@@ -80,7 +80,7 @@ def gauge(meta_aline, total_liq_aline, valorEquilibrio_aline):
                 "title": {"fontSize": 15},  # Increase font size of title
                 # "radius": '80%',
                 # "center": ['50%', '80%'],
-                "radius": 180,  # Increase radius of gauge
+                "radius": 150,  # Increase radius of gauge
                 "detail": {
                     "width": 40,  # Increase width of detail
                     "height": 14,  # Increase height of detail
