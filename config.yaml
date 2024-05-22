@@ -1,0 +1,24 @@
+credentials:
+  usernames:
+    producao:
+      email: producao@gmail.com
+      name: Producao
+      password: '$2b$12$22LKJU6uvK7BQ8rQQglULu1HEN0iUnBV8gn0vsIEqn0QNsq5u3WKu'
+      roles: [user]
+    jack:
+      email: jackvartanian.marketing@gmail.com
+      name: Jack Vartanian
+      password: '$2b$12$PMk9DyCzggK7mU3GVlIq8OnCRTb227tVyQOU1VU5v2FhJAI8B45vq'
+      roles: [admin]
+    jmoura:
+      email: jean.moura@jackvartanian.com
+      name: Jean Moura
+      password: '$2b$12$aWj0aJOJ8Y2QCUHnC1m.BeNYvnNHJmLihCCxvgG6UQAYV1EbTKQhK'
+      roles: [admin]
+cookie:
+  expiry_days: 90
+  key: some_signature_key
+  name: some_cookie_name
+preauthorized:
+  emails:
+  - melsby@gmail.com

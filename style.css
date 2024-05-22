@@ -1,0 +1,20 @@
+h1{
+  padding: 0.25rem 0px 1rem;
+}
+
+@media (max-width: 640px){
+  .st-emotion-cache-keje6w{
+    min-width: 10px;
+  }
+}
+
+.st-emotion-cache-2vxabl{
+  gap: 0.1rem;
+}
+.st-emotion-cache-1jicfl2{
+  padding: 1rem 1rem 10rem;
+}
+
+footer {
+  visibility: hidden;
+}
