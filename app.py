@@ -51,29 +51,28 @@ if authentication_status:
     produtos = fun.produtos()
     produtos_group = produtos[['Metal','Cod. Modelo', 'Cod. Prod.']]
     vendas = vendas.join(produtos_group.set_index('Cod. Prod.'), on='Cod. Prod.')
-            
-    
+
     # CSS para ajustar o espaço antes do título
-    st.markdown(
-        """
-        <style>
-        .title-spacing {
-            margin-top: 0px;
-            margin-bottom: 10px;
-        }
-        .custom-divider {
-            margin-top: -20px; /* Ajuste o valor conforme necessário */
-            border-top: 2px solid #e0e0e0; /* Estilo do divisor */
-        }
-        @media (max-width: 640px){
-            .st.emotion-cache-keje6w {
-                min-width: 0px;
-            }
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+    # st.markdown(
+    #     """
+    #     <style>
+    #     .title-spacing {
+    #         margin-top: 0px;
+    #         margin-bottom: 10px;
+    #     }
+    #     .custom-divider {
+    #         margin-top: -20px; /* Ajuste o valor conforme necessário */
+    #         border-top: 2px solid #e0e0e0; /* Estilo do divisor */
+    #     }
+    #     @media (max-width: 640px){
+    #         .st.emotion-cache-keje6w {
+    #             min-width: 0px;
+    #         }
+    #     }
+    #     </style>
+    #     """,
+    #     unsafe_allow_html=True
+    # )
 
     # Aplicando a classe CSS personalizada ao título
     st.markdown('<h1 class="title-spacing">Olá, Aline.</h1>', unsafe_allow_html=True)
