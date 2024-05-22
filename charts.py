@@ -1,10 +1,10 @@
 import pandas as pd
 import numpy as np
 import streamlit as st
-import plotly.express as px
-import plotly.graph_objs as go
+# import plotly.express as px
+# import plotly.graph_objs as go
 from streamlit_echarts import st_echarts
-from streamlit_echarts import st_pyecharts
+# from streamlit_echarts import st_pyecharts
 import streamviz as sv
 
 from warnings import simplefilter
