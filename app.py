@@ -12,7 +12,7 @@ import calendar
 import streamlit as st
 
 st.set_page_config(
-    page_title="Jack Vartanian - BI",
+    page_title="Jack Vartanian - KPIs",
     page_icon="📈",
     layout="wide",
     initial_sidebar_state="collapsed",
