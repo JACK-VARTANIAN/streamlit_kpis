@@ -12,6 +12,10 @@ h1 {
   border-top: 2px solid #e0e0e0;
 }
 
+.st-emotion-cache-keje6w:first-child .element-container:last-child .st-emotion-cache-1xarl3l {
+  color: rgb(96, 241, 96);
+}
+
 @media (max-width: 640px) {
   .st-emotion-cache-keje6w {
     min-width: 5px;
@@ -43,8 +47,6 @@ h1 {
 footer {
   visibility: hidden;
 }
-
-
 
 
 /* 

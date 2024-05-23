@@ -24,13 +24,15 @@ def vendas_capta():
         io.BytesIO(response.content), sep=";", compression="gzip", low_memory=True
     )
 
-    df["Data"] = pd.to_datetime(df["Data"])
-    df["Ano"] = df["Data"].dt.year
-    df["Mes"] = df["Data"].dt.month
-    df["Ano_Mes"] = df["Data"].dt.strftime("%Y-%m")
-    # df['Ano_Mes'] = pd.to_datetime(df['Data'], format='%Y-%m').dt.date
-    df["Data"] = df["Data"].dt.date
-    colunasInt = ["Qtd", "Total Liq.", "Desconto", "Custo", "Total Brt"]
+    data = pd.to_datetime(df["Data"])
+    df = df.assign(
+        Data=data.dt.date,
+        Ano=data.dt.year,
+        Mes=data.dt.month,
+        Ano_Mes=data.dt.strftime("%Y-%m"),
+        Consultora_Nome=df["Consultora"].str.split(" ").str[0]
+    )
+
     colunasStr = ["Cod. Barras", "No.Oper"]
     df[colunasStr] = df[colunasStr].astype("str")
     df["Consultora_Nome"] = df["Consultora"].str.split(" ").str[0]

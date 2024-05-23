@@ -48,72 +48,18 @@ if authentication_status:
     
     vendas = fun.vendas_capta()
     metas = fun.metas()
-    produtos = fun.produtos()
-    produtos_group = produtos[['Metal','Cod. Modelo', 'Cod. Prod.']]
-    vendas = vendas.join(produtos_group.set_index('Cod. Prod.'), on='Cod. Prod.')
+    
+    st.sidebar.image('gallery/avatar.png', width=150)
 
-    # CSS para ajustar o espaço antes do título
-    # st.markdown(
-    #     """
-    #     <style>
-    #     .title-spacing {
-    #         margin-top: 0px;
-    #         margin-bottom: 10px;
-    #     }
-    #     .custom-divider {
-    #         margin-top: -20px; /* Ajuste o valor conforme necessário */
-    #         border-top: 2px solid #e0e0e0; /* Estilo do divisor */
-    #     }
-    #     @media (max-width: 640px){
-    #         .st.emotion-cache-keje6w {
-    #             min-width: 0px;
-    #         }
-    #     }
-    #     </style>
-    #     """,
-    #     unsafe_allow_html=True
-    # )
-
-    # Aplicando a classe CSS personalizada ao título
     st.markdown('<h3 class="title-spacing">Olá, Aline</h3>', unsafe_allow_html=True)
     st.markdown('<hr class="custom-divider">', unsafe_allow_html=True)
     
-    # col1, col2, col3 = st.columns(3)
-    # with col1:
-    #     with st.expander("Filtros de Data"):
-    #         st.sidebar.divider()
-    #         st.sidebar.write('Selecione o período desejado')
-    #         start_date = st.sidebar.date_input('Data Inicial', datetime.date.today().replace(day=1))
-    #         # start_date = st.date_input('Data Inicial', datetime.date.today().replace(day=1))
-    #         start_date_y = start_date - relativedelta(years=1)
-
-    #         end_date = st.sidebar.date_input('Data Final', max_value=datetime.date.today())
-    #         # end_date = st.date_input('Data Final', max_value=datetime.date.today())
-    #         end_date_y = end_date - relativedelta(years=1)
-            
-    #         month = start_date.month
-    #         year = start_date.year
-    #         year_y = start_date_y.year
-            
-    #         month_days = calendar.monthrange(year, month)[1]
-    #         days_left = month_days - end_date.day
-            
-    #         if month < 10:
-    #             month = '0' + str(month)
-    #         else:
-    #             month = str(month)
-            
-    #         year_month = start_date.strftime('%Y-%m')
-    #         year_month_y = start_date_y.strftime('%Y-%m')
-            
     st.sidebar.divider()
     st.sidebar.write('Selecione o período desejado')
     start_date = st.sidebar.date_input('Data Inicial', datetime.date.today().replace(day=1))
-    # start_date = st.date_input('Data Inicial', datetime.date.today().replace(day=1))
     start_date_y = start_date - relativedelta(years=1)
 
     end_date = st.sidebar.date_input('Data Final', max_value=datetime.date.today())
-    # end_date = st.date_input('Data Final', max_value=datetime.date.today())
     end_date_y = end_date - relativedelta(years=1)
     
     month = start_date.month
@@ -259,7 +205,6 @@ if authentication_status:
     saldo_meta_aline = fun.saldoMeta(metas_aline, total_liq_aline)
     perc_meta_aline = fun.percMeta(total_liq_aline, metas_aline)
     
-    
     metas_giovana = fun.meta_a(meta_giovana)
     meta_dia_giovana = fun.meta_dia(metas_giovana, month_days)
     saldo_meta_giovana = fun.saldoMeta(metas_giovana, total_liq_giovana)
@@ -279,13 +224,11 @@ if authentication_status:
     saldoEquilibrio_igu = fun.saldoEquilibrio(total_liq_igu, valorEquilibrio_igu)
     totalSaldo_igu = fun.totalSaldo(total_liq_igu, valorEquilibrio_igu)
     
-    
     valorEquilibrio_aline = fun.valorEquilibrio(meta_dia_aline, end_date.day)
     saldoEquilibrio_aline = fun.saldoEquilibrio(total_liq_aline, valorEquilibrio_aline)
     totalSaldo_aline = fun.totalSaldo(total_liq_aline, valorEquilibrio_aline)
     perc_equil_meta_aline = fun.percVendaDia(total_liq_aline, valorEquilibrio_aline)
     venda_dia_aline = valorEquilibrio_aline - total_liq_aline
-    
     
     valorEquilibrio_giovana = fun.valorEquilibrio(meta_dia_giovana, end_date.day)
     saldoEquilibrio_giovana = fun.saldoEquilibrio(total_liq_giovana, valorEquilibrio_giovana)
@@ -308,18 +251,47 @@ if authentication_status:
     yoy_total_lorena = fun.yoyTotal(total_liq_lorena, total_liq_y_lorena)
     yoy_total_poliane = fun.yoyTotal(total_liq_poliane, total_liq_y_poliane)
     
-    col1, col2 = st.columns(2)
-    with col1: 
-        st.metric("Meta do mês", fun.fNumbers(meta_aline['Meta']))
-        st.metric("Realizado ", fun.fNumbers(total_liq_aline), fun.fPerc(perc_equil_meta_aline))
-    with col2:
-        st.metric("Meta do dia", fun.fNumbers(meta_dia_aline))
-        st.metric("Venda esperada pro dia", fun.fNumbers(venda_dia_aline))        
-    
-    # st.title('Analise as suas :rainbow[Metas:]')
-    st.subheader('Acompanhe sua meta: ')
-    
-    ch.gauge(meta_aline, total_liq_aline, valorEquilibrio_aline)
+    if metas_aline < total_liq_aline:
+        st.balloons()
+        st.subheader("Parabéns, você atingiu a meta do mês!")
+        col1, col2 = st.columns(2)
+        with col1: 
+            st.metric("Meta do mês", fun.fNumbers(metas_aline))
+            # st.metric("Realizado ", fun.fNumbers(total_liq_aline), fun.fPerc(perc_equil_meta_aline))
+        with col2:
+            st.metric("Realizado ", fun.fNumbers(total_liq_aline))
+        
+        ch.gauge(meta_aline, total_liq_aline, valorEquilibrio_aline)
+
+    else:
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("Meta do mês", fun.fNumbers(metas_aline))
+            st.metric("Realizado ", fun.fNumbers(total_liq_aline), fun.fPerc(perc_equil_meta_aline))
+        with col2:
+            st.metric("Meta do dia", fun.fNumbers(meta_dia_aline))
+            if venda_dia_aline < 0:
+                st.balloons()
+                st.subheader("Parabéns, sua meta está em dia!")
+            else:
+                st.metric("Venda esperada para o dia", fun.fNumbers(venda_dia_aline))        
+
+        if valorEquilibrio_aline > total_liq_aline:
+            st.markdown(
+            """
+            <style>
+                .st-emotion-cache-keje6w:first-child .element-container:last-child .st-emotion-cache-1xarl3l{
+                    color:red;
+                }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+        
+        # st.title('Analise as suas :rainbow[Metas:]')
+        st.subheader('Acompanhe sua meta: ')
+        
+        ch.gauge(meta_aline, total_liq_aline, valorEquilibrio_aline)
 
     # st.title('')
     # st.title('')
