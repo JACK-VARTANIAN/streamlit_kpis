@@ -2,16 +2,8 @@ import pandas as pd
 import numpy as np
 from numpy import where
 import io
-import datetime
-from datetime import datetime
-import time
 import requests
 import streamlit as st
-from st_aggrid import AgGrid, JsCode, GridUpdateMode, GridOptionsBuilder, ColumnsAutoSizeMode
-from PIL import Image
-import xlsxwriter
-from xlsxwriter.utility import xl_range, xl_rowcol_to_cell
-
 
 def vendas_capta():
     url = "https://jackvartanian.net/cms/wp-content/uploads/datasets/vendas_gzip.csv"
