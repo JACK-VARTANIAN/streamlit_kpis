@@ -10,6 +10,9 @@ import datetime
 from dateutil.relativedelta import relativedelta
 import calendar
 import streamlit as st
+import streamlit_authenticator as stauth
+import bcrypt
+import random
 
 st.set_page_config(
     page_title="Jack Vartanian - KPIs",
@@ -21,7 +24,18 @@ st.set_page_config(
 with open('style.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
-# hashed_passwords = stauth.Hasher(['123', '456']).generate()
+# #criar variável com 6 números aleatórios
+# digits = random.sample(range(10), 6)
+
+# # Sort the digits in ascending order
+# digits.sort()
+
+# # Convert the list of digits into a single integer
+# final_senha = int(''.join(map(str, digits)))
+
+
+# hashed_passwords = fun.hash_passwords([str(final_senha)])
+
 
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
@@ -44,14 +58,17 @@ if authentication_status:
     st.session_state["role"] = role
     
     st.sidebar.write(f'Olá, {st.session_state["name"]}')
+    cod_vendedora = config['credentials']['usernames'][username]['cod']
+    nome_vendor = config['credentials']['usernames'][username]['name']
+    foto_consultora = config['credentials']['usernames'][username]['foto']
     authenticator.logout('Logout', 'sidebar')
     
     vendas = fun.vendas_capta()
     metas = fun.metas()
     
-    st.sidebar.image('gallery/avatar.png', width=150)
+    st.sidebar.image(foto_consultora, width=150)
 
-    st.markdown('<h3 class="title-spacing">Olá, Aline</h3>', unsafe_allow_html=True)
+    st.markdown(f'<h3 class="title-spacing">Olá, {nome_vendor}</h3>', unsafe_allow_html=True)
     st.markdown('<hr class="custom-divider">', unsafe_allow_html=True)
     
     st.sidebar.divider()
@@ -90,17 +107,17 @@ if authentication_status:
     meta_web = metas_loja[metas_loja['Loja'] == 'WEB']
     meta_bat = metas_loja[metas_loja['Loja'] == 'BAT']
     
-    meta_aline = metas_consultora[metas_consultora['Cod_Vend'] == '0729/2']
-    meta_giovana = metas_consultora[metas_consultora['Cod_Vend'] == '0723/5']
-    meta_lorena = metas_consultora[metas_consultora['Cod_Vend'] == 'LAMORIM']
-    meta_poliane = metas_consultora[metas_consultora['Cod_Vend'] == '0573/7']
+    meta_da_consultora = fun.meta_consultora(cod_vendedora, year_month)
+    
     
     vendas_igu = vendas_a[vendas_a['Empresa'] == 'IGU']
     vendas_bel = vendas_a[vendas_a['Empresa'] == 'BEL']
     vendas_web = vendas_a[vendas_a['Empresa'] == 'WEB']
     vendas_bat = vendas_a[vendas_a['Empresa'] == 'BAT']
     
-    vendas_aline = vendas_a[vendas_a['Cod. Vend.'] == '0729/2']
+    vendas_da_consultora = fun.vendas_consultora(start_date, end_date, cod_vendedora)
+    vendas_da_consultora_y = fun.vendas_consultora_y(start_date_y, end_date_y, cod_vendedora)
+    
     vendas_giovana = vendas_a[vendas_a['Cod. Vend.'] == '0723/5']
     vendas_lorena = vendas_a[vendas_a['Cod. Vend.'] == 'LAMORIM']
     vendas_poliane = vendas_a[vendas_a['Cod. Vend.'] == '0573/7']
@@ -127,25 +144,19 @@ if authentication_status:
     vendas_meta_bat = vendas_meta_bat.join(meta_igu.set_index('Cod_Vend'), on='Cod. Vend.')
     vendas_meta_bat = vendas_meta_bat.drop(columns=['Loja'])
     
-    
     vendas_igu_y = vendas_y[vendas_y['Empresa'] == 'IGU']
     vendas_bel_y = vendas_y[vendas_y['Empresa'] == 'BEL']
     vendas_web_y = vendas_y[vendas_y['Empresa'] == 'WEB']
     vendas_bat_y = vendas_y[vendas_y['Empresa'] == 'BAT']
     
-    vendas_aline_y = vendas_y[vendas_y['Cod. Vend.'] == '0729/2']
-    vendas_giovana_y = vendas_y[vendas_y['Cod. Vend.'] == '0723/5']
-    vendas_lorena_y = vendas_y[vendas_y['Cod. Vend.'] == 'LAMORIM']
-    vendas_poliane_y = vendas_y[vendas_y['Cod. Vend.'] == '0573/7']
-    
-    tkts_a = np.unique(vendas_a['ID_Venda'])
+    tkts_a = np.unique(vendas_da_consultora['ID_Venda'])
     Qtd_tkts = len(tkts_a)
     
-    tkts_y = np.unique(vendas_y['ID_Venda'])
+    tkts_y = np.unique(vendas_da_consultora_y['ID_Venda'])
     Qtd_tkts_y = len(tkts_y)
     
-    totalLiq = int(np.sum(vendas_a['Total Liq.']))
-    totalLiq_y = int(np.sum(vendas_y['Total Liq.']))
+    totalLiq = int(np.sum(vendas_da_consultora['Total Liq.']))
+    totalLiq_y = int(np.sum(vendas_da_consultora_y['Total Liq.']))
     
     meta = int(np.sum( metas_loja['Meta'] ))
     metaDia = int(np.sum( metas_loja['Meta'] ) / month_days )
@@ -174,17 +185,8 @@ if authentication_status:
     total_liq_igu = fun.totalLiq_a(vendas_igu)
     total_liq_y_igu = fun.totalLiq_y(vendas_igu_y)
     
-    total_liq_aline = fun.totalLiq_a(vendas_aline)
-    total_liq_y_aline = fun.totalLiq_y(vendas_aline_y)
-    
-    total_liq_giovana = fun.totalLiq_a(vendas_giovana)
-    total_liq_y_giovana = fun.totalLiq_y(vendas_giovana_y)
-    
-    total_liq_lorena = fun.totalLiq_a(vendas_lorena)
-    total_liq_y_lorena = fun.totalLiq_y(vendas_lorena_y)
-    
-    total_liq_poliane = fun.totalLiq_a(vendas_poliane)
-    total_liq_y_poliane = fun.totalLiq_y(vendas_poliane_y)
+    total_liq_consultora = fun.totalLiq_a(vendas_da_consultora)
+    total_liq_consultora_y = fun.totalLiq_y(vendas_da_consultora_y)
     
     qtd_tickets_igu = fun.tickets_a(vendas_igu)
     qtd_tickets_y_igu = fun.tickets_y(vendas_igu_y)
@@ -200,83 +202,54 @@ if authentication_status:
     saldo_meta_igu = fun.saldoMeta(metas_igu, total_liq_igu)
     perc_meta_igu = fun.percMeta(total_liq_igu, metas_igu)
     
-    metas_aline = fun.meta_a(meta_aline)
-    meta_dia_aline = fun.meta_dia(metas_aline, month_days)
-    saldo_meta_aline = fun.saldoMeta(metas_aline, total_liq_aline)
-    perc_meta_aline = fun.percMeta(total_liq_aline, metas_aline)
-    
-    metas_giovana = fun.meta_a(meta_giovana)
-    meta_dia_giovana = fun.meta_dia(metas_giovana, month_days)
-    saldo_meta_giovana = fun.saldoMeta(metas_giovana, total_liq_giovana)
-    perc_meta_giovana = fun.percMeta(total_liq_giovana, metas_giovana)
-    
-    metas_lorena = fun.meta_a(meta_lorena)
-    meta_dia_lorena = fun.meta_dia(metas_lorena, month_days)
-    saldo_meta_lorena = fun.saldoMeta(metas_lorena, total_liq_lorena)
-    perc_meta_lorena = fun.percMeta(total_liq_lorena, metas_lorena)
-    
-    metas_poliane = fun.meta_a(meta_poliane)
-    meta_dia_poliane = fun.meta_dia(metas_poliane, month_days)
-    saldo_meta_poliane = fun.saldoMeta(metas_poliane, total_liq_poliane)
-    perc_meta_poliane = fun.percMeta(total_liq_poliane, metas_poliane)
+    metas_da_consultora = fun.meta_a(meta_da_consultora)
+    meta_dia_consultora = fun.meta_dia(metas_da_consultora, month_days)
+    saldo_meta_da_consultora = fun.saldoMeta(metas_da_consultora, total_liq_consultora)
+    perc_meta_da_consultora = fun.percMeta(total_liq_consultora, metas_da_consultora)
+
     
     valorEquilibrio_igu = fun.valorEquilibrio(meta_dia_igu, end_date.day)
     saldoEquilibrio_igu = fun.saldoEquilibrio(total_liq_igu, valorEquilibrio_igu)
     totalSaldo_igu = fun.totalSaldo(total_liq_igu, valorEquilibrio_igu)
     
-    valorEquilibrio_aline = fun.valorEquilibrio(meta_dia_aline, end_date.day)
-    saldoEquilibrio_aline = fun.saldoEquilibrio(total_liq_aline, valorEquilibrio_aline)
-    totalSaldo_aline = fun.totalSaldo(total_liq_aline, valorEquilibrio_aline)
-    perc_equil_meta_aline = fun.percVendaDia(total_liq_aline, valorEquilibrio_aline)
-    venda_dia_aline = valorEquilibrio_aline - total_liq_aline
-    
-    valorEquilibrio_giovana = fun.valorEquilibrio(meta_dia_giovana, end_date.day)
-    saldoEquilibrio_giovana = fun.saldoEquilibrio(total_liq_giovana, valorEquilibrio_giovana)
-    totalSaldo_giovana = fun.totalSaldo(total_liq_giovana, valorEquilibrio_giovana)
-    
-    valorEquilibrio_lorena = fun.valorEquilibrio(meta_dia_lorena, end_date.day)
-    saldoEquilibrio_lorena = fun.saldoEquilibrio(total_liq_lorena, valorEquilibrio_lorena)
-    totalSaldo_lorena = fun.totalSaldo(total_liq_lorena, valorEquilibrio_lorena)
-    
-    valorEquilibrio_poliane = fun.valorEquilibrio(meta_dia_poliane, end_date.day)
-    saldoEquilibrio_poliane = fun.saldoEquilibrio(total_liq_poliane, valorEquilibrio_poliane)
-    totalSaldo_poliane = fun.totalSaldo(total_liq_poliane, valorEquilibrio_poliane)
+    valorEquilibrio_consultora = fun.valorEquilibrio(meta_dia_consultora, end_date.day)
+    saldoEquilibrio_consultora = fun.saldoEquilibrio(total_liq_consultora, valorEquilibrio_consultora)
+    totalSaldo_consultora = fun.totalSaldo(total_liq_consultora, valorEquilibrio_consultora)
+    perc_equil_meta_da_consultora = fun.percVendaDia(total_liq_consultora, valorEquilibrio_consultora)
+    venda_dia_consultora = valorEquilibrio_consultora - total_liq_consultora
     
     yoy_total_igu = fun.yoyTotal(total_liq_igu, total_liq_y_igu)
     yoy_tickets_igu = fun.yoyTickets(qtd_tickets_igu, qtd_tickets_y_igu)
     yoy_tkm_igu = fun.yoyTkm(ticket_medio_igu, ticket_medio_y_igu)
     
-    yoy_total_aline = fun.yoyTotal(total_liq_aline, total_liq_y_aline)
-    yoy_total_giovana = fun.yoyTotal(total_liq_giovana, total_liq_y_giovana)
-    yoy_total_lorena = fun.yoyTotal(total_liq_lorena, total_liq_y_lorena)
-    yoy_total_poliane = fun.yoyTotal(total_liq_poliane, total_liq_y_poliane)
+    yoy_total_consultora = fun.yoyTotal(total_liq_consultora, total_liq_consultora_y)
     
-    if metas_aline < total_liq_aline:
+    if metas_da_consultora < total_liq_consultora:
         st.balloons()
         st.subheader("Parabéns, você atingiu a meta do mês!")
         col1, col2 = st.columns(2)
         with col1: 
-            st.metric("Meta do mês", fun.fNumbers(metas_aline))
-            # st.metric("Realizado ", fun.fNumbers(total_liq_aline), fun.fPerc(perc_equil_meta_aline))
+            st.metric("Meta do mês", fun.fNumbers(metas_da_consultora))
+            # st.metric("Realizado ", fun.fNumbers(total_liq_consultora), fun.fPerc(perc_equil_meta_da_consultora))
         with col2:
-            st.metric("Realizado ", fun.fNumbers(total_liq_aline))
+            st.metric("Realizado ", fun.fNumbers(total_liq_consultora))
         
-        ch.gauge(meta_aline, total_liq_aline, valorEquilibrio_aline)
+        ch.gauge(meta_da_consultora, total_liq_consultora, valorEquilibrio_consultora)
 
     else:
         col1, col2 = st.columns(2)
         with col1:
-            st.metric("Meta do mês", fun.fNumbers(metas_aline))
-            st.metric("Realizado ", fun.fNumbers(total_liq_aline), fun.fPerc(perc_equil_meta_aline))
+            st.metric("Meta do mês", fun.fNumbers(metas_da_consultora))
+            st.metric("Realizado ", fun.fNumbers(total_liq_consultora), fun.fPerc(perc_equil_meta_da_consultora))
         with col2:
-            st.metric("Meta do dia", fun.fNumbers(meta_dia_aline))
-            if venda_dia_aline < 0:
+            st.metric("Meta do dia", fun.fNumbers(meta_dia_consultora))
+            if venda_dia_consultora < 0:
                 st.balloons()
                 st.subheader("Parabéns, sua meta está em dia!")
             else:
-                st.metric("Venda esperada para o dia", fun.fNumbers(venda_dia_aline))        
+                st.metric("Venda esperada para o dia", fun.fNumbers(venda_dia_consultora))        
 
-        if valorEquilibrio_aline > total_liq_aline:
+        if valorEquilibrio_consultora > total_liq_consultora:
             st.markdown(
             """
             <style>
@@ -291,7 +264,7 @@ if authentication_status:
         # st.title('Analise as suas :rainbow[Metas:]')
         st.subheader('Acompanhe sua meta: ')
         
-        ch.gauge(meta_aline, total_liq_aline, valorEquilibrio_aline)
+        ch.gauge(meta_da_consultora, total_liq_consultora, valorEquilibrio_consultora)
 
     # st.title('')
     # st.title('')

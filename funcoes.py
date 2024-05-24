@@ -4,7 +4,11 @@ from numpy import where
 import io
 import requests
 import streamlit as st
+import bcrypt
+import datetime
 
+
+@st.cache_data(hash_funcs={datetime.datetime: lambda dt: dt.isoformat()})
 def vendas_capta():
     url = "https://jackvartanian.net/cms/wp-content/uploads/datasets/vendas_gzip.csv"
     headers = {
@@ -32,6 +36,7 @@ def vendas_capta():
     return df
 
 
+@st.cache_data(hash_funcs={datetime.datetime: lambda dt: dt.isoformat()})
 def clientes():
     url = "https://jackvartanian.net/cms/wp-content/uploads/datasets/clientes_gzip.csv"
     headers = {
@@ -71,6 +76,7 @@ def clientes():
     return df
 
 
+@st.cache_data(hash_funcs={datetime.datetime: lambda dt: dt.isoformat()})
 def produtos():
     url = "https://jackvartanian.net/cms/wp-content/uploads/datasets/produtos_gzip.csv"
     headers = {
@@ -83,6 +89,7 @@ def produtos():
     return df
 
 
+@st.cache_data(hash_funcs={datetime.datetime: lambda dt: dt.isoformat()})
 def metas():
     url = "https://jackvartanian.net/cms/wp-content/uploads/datasets/METAS.xlsx"
     headers = {
@@ -230,3 +237,29 @@ def mediaDia(totalLiq, end_date):
 def mediaDiaRest(totalLiq, mediaDia, days_left):
     mediaDiaDiasRestantes = totalLiq + (mediaDia * days_left)
     return mediaDiaDiasRestantes
+
+def meta_consultora(cod_vend, year_month):
+    meta = metas()
+    metas_consultora = meta.loc[meta['Ano_Mes'] == year_month]
+    return metas_consultora[metas_consultora['Cod_Vend'] == cod_vend]
+
+def vendas_consultora(start_date, end_date, cod_vend):
+    vendas = vendas_capta()
+    vendas = vendas[vendas['Data'].between(start_date, end_date)]
+    vendas = vendas[vendas['Cod. Vend.'] == cod_vend]
+    return vendas
+    
+def vendas_consultora_y(start_date, end_date, cod_vend):
+    vendas = vendas_capta()
+    vendas = vendas[vendas['Data'].between(start_date, end_date)]
+    vendas = vendas[vendas['Cod. Vend.'] == cod_vend]
+    return vendas
+
+def hash_passwords(passwords):
+    hashed_passwords = []
+    for password in passwords:
+        # Hash the password and add it to the list
+        hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+        hashed_passwords.append(hashed.decode())
+    return hashed_passwords
+    

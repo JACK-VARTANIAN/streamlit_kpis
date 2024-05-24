@@ -1,20 +1,53 @@
 credentials:
   usernames:
-    producao:
-      email: producao@gmail.com
-      name: Producao
-      password: '$2b$12$22LKJU6uvK7BQ8rQQglULu1HEN0iUnBV8gn0vsIEqn0QNsq5u3WKu'
-      roles: [user]
+    giovanna:
+      email: giovanna.kitagawa@jackvartanian.com
+      name: Giovanna
+      password: '$2b$12$402V.nVQHXZNxpgOiidZzuzWlbvIL6u2XVxiQM6XF7IHp/uZ81XxO'
+      roles: [admin]
+      senha: '123478'
+      cod: '0723/5'
+      foto: 'gallery/giovanna.png'
+    aline:
+      email: aline.santana@jackvartanian.com
+      name: Aline
+      password: '$2b$12$Er3yBr1qWQ/Xj24IfcIqIuBUBZKz.CRuGsGxlfp2ZxR4g/QD8.0vq'
+      roles: [admin]
+      senha: '14679'
+      cod: '0729/2'
+      foto: 'gallery/aline.jpg'
+    lorena:
+      email: lorena.amorim@jackvartanian.com
+      name: Lorena
+      password: '$2b$12$AFyH0NWKf/WGPr/AeGLlv.wEeVIc28JdqCJzCdx7kZV2YjARM/WcK'
+      roles: [admin]
+      senha: '145789'
+      cod: 'LAMORIM'
+      foto: 'gallery/lorena.jpg'
+    poliane:
+      email: poliane.santos@jackvartanian.com
+      name: Poliane
+      password: '$2b$12$o1zFKZjPSXviC907cyQT3eQgOWHTHbPk.5qfIvZuEZs2bpcECK8GW'
+      roles: [admin]
+      senha: '23689'
+      cod: '0573/7'
+      foto: 'gallery/poliane.jpg'
+    vanessa:
+      email: vanessa.silvestre@jackvartanian.com
+      name: Vanessa
+      password: '$2b$12$AJEaxCyQ6gi66.XFezL5l.HXnr8ZFnHGdjnPrxJUmhT3VWGHOFWOe'
+      roles: [admin]
+      senha: '24678'
+      cod: '0495/1'
+      foto: 'gallery/vanessa.jpg'
     jack:
-      email: jackvartanian.marketing@gmail.com
-      name: Jack Vartanian
-      password: '$2b$12$PMk9DyCzggK7mU3GVlIq8OnCRTb227tVyQOU1VU5v2FhJAI8B45vq'
+      email: jack@jackvartanian.com
+      name: Jack
+      password: '$2b$12$AJEaxCyQ6gi66.XFezL5l.HXnr8ZFnHGdjnPrxJUmhT3VWGHOFWOe'
       roles: [admin]
-    jmoura:
-      email: jean.moura@jackvartanian.com
-      name: Jean Moura
-      password: '$2b$12$aWj0aJOJ8Y2QCUHnC1m.BeNYvnNHJmLihCCxvgG6UQAYV1EbTKQhK'
-      roles: [admin]
+      senha: '24678'
+      cod: '0495/1'
+      foto: 'gallery/vanessa.jpg'
 cookie:
   expiry_days: 90
   key: some_signature_key
