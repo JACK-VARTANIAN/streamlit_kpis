@@ -99,13 +99,3 @@ def gauge(meta_aline, total_liq_aline, valorEquilibrio_aline):
     # st_pyecharts(chart='Pie', height='500px', width='100%')
     st_echarts(options=option, height='300px', key='gauge')
 
-def gauge_streamviz():
-    # Create a gauge chart
-    gauge_chart = sv.GaugeChart(
-        title="Gauge Chart",
-        value=0.75,
-        min_value=0,
-        max_value=1,
-        description="This is a gauge chart",
-    )
-    gauge_chart.show()

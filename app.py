@@ -167,13 +167,13 @@ if authentication_status:
     
     total_saldo = ((totalLiq / valorEquilibrio) - 1)
     
-    yoy_total = ((totalLiq / totalLiq_y) - 1)
-    yoy_tickets = ((Qtd_tkts / Qtd_tkts_y) - 1)
+    # yoy_total = ((totalLiq / totalLiq_y) - 1)
+    # yoy_tickets = ((Qtd_tkts / Qtd_tkts_y) - 1)
     
-    ticket_medio = (totalLiq / Qtd_tkts)
-    ticket_medio_y = (totalLiq_y / Qtd_tkts_y)
+    # ticket_medio = (totalLiq / Qtd_tkts)
+    # ticket_medio_y = (totalLiq_y / Qtd_tkts_y)
     
-    yoy_tkm = ((ticket_medio / ticket_medio_y) - 1)
+    # yoy_tkm = ((ticket_medio / ticket_medio_y) - 1)
     
     saldo_meta = (meta - totalLiq)
     perc_meta = (totalLiq / meta)

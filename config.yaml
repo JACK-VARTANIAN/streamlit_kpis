@@ -40,14 +40,14 @@ credentials:
       senha: '24678'
       cod: '0495/1'
       foto: 'gallery/vanessa.jpg'
-    jack:
-      email: jack@jackvartanian.com
-      name: Jack
-      password: '$2b$12$AJEaxCyQ6gi66.XFezL5l.HXnr8ZFnHGdjnPrxJUmhT3VWGHOFWOe'
-      roles: [admin]
-      senha: '24678'
-      cod: '0495/1'
-      foto: 'gallery/vanessa.jpg'
+    # jack:
+    #   email: jack@jackvartanian.com
+    #   name: Jack
+    #   password: '$2b$12$AJEaxCyQ6gi66.XFezL5l.HXnr8ZFnHGdjnPrxJUmhT3VWGHOFWOe'
+    #   roles: [admin]
+    #   senha: '24678'
+    #   cod: '0495/1'
+    #   foto: 'gallery/jack.jpg'
 cookie:
   expiry_days: 90
   key: some_signature_key
